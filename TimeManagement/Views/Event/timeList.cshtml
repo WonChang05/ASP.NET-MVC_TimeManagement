@@ -1,0 +1,108 @@
+﻿@model List<TimeManagement.Models.timeData>
+@{
+    ViewBag.Title = "timeList";
+}
+
+
+<div class="table-responsive-sm main text-center" style="padding: 1% 10%;">
+    <h3 class="text-center pb-3">
+        清單
+    </h3>
+    <form action="/Event/timeList" method="post" class="pull-left col-md pb-5">
+        <input id="ymd" name="ymd" type="text" placeholder="選取日期" class="col-md-2 form-control dateRange pos-absolute" required="">
+        <button type="submit" class="btn btn-warning btn-md col-md-1" href=""> <i class="fa fa-search"></i> 查詢</button>
+        <a href="/Event/Add" class="btn btn-md pull-right btn-success col-md-1"><span class="fa fa-plus-circle"></span>新增</a>
+    </form>
+
+
+    <table class="table table-striped table-hover table-bordered" style="font-family: 'Microsoft JhengHei',  Arial, serif;" >
+        <thead class="thead-dark">
+            <tr >
+                <th class="text-center" style="width:10%;">日期</th>
+                <th class="text-center">開始時間</th>
+                <th class="text-center">結束時間</th>
+                <th class="text-center">事件類別</th>
+                <th class="text-center">備註</th>
+                <th style="">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.ymd</td>
+                        <td>@p.startTime</td>
+                        <td>@p.endTime</td>
+                        <td>@p.category</td>
+                        <td>@p.memo</td>
+                        <td>
+                            <span class="align-items-center">
+                                <a class="btn btn-info btn-md" href="/Event/Edit?id=@p.dataId"> <span class="fa fa-pencil-square-o"></span> 修改</a> |
+                                <a class="btn btn-danger btn-md" href="/Event/Delete?id=@p.dataId"> <span class="fa fa-trash-o"></span> 刪除</a>
+                            </span>
+
+                        </td>
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>
+</div>
+@{
+    var message = TempData["CRUD"];
+}
+@if (TempData["CRUD"] != null)
+{
+    <script type="text/javascript">
+        var message = '@message'
+        alert(message);
+    </script>
+}
+
+<!--載入連結-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></link>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" rel="stylesheet"></link>
+<!--載入連結-->
+<!--執行 Date Range Picker-->
+<script>
+    $("input.default").daterangepicker();
+</script>
+<!--執行 Date Range Picker-->
+<script>
+    $("input.dateRange").daterangepicker({
+        "alwaysShowCalendars": true,
+        showDropdowns: true,
+        opens: "right",
+        startDate: moment(),
+        endDate: moment(),
+        ranges: {
+            "今天": [moment(), moment()],
+            "過去 7 天": [moment().subtract(6, "days"), moment()],
+            "本月": [moment().startOf("month"), moment().endOf("month")],
+            "上個月": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+        },
+        locale: {
+            format: "YYYY-MM-DD",
+            separator: " ~ ",
+            applyLabel: "確定",
+            cancelLabel: "清除",
+            fromLabel: "開始日期",
+            toLabel: "結束日期",
+            customRangeLabel: "自訂日期區間",
+            daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+            monthNames: ["1月", "2月", "3月", "4月", "5月", "6月",
+                "7月", "8月", "9月", "10月", "11月", "12月"
+            ],
+            firstDay: 0
+        }
+    });
+    $("input.dateRange").on("cancel.daterangepicker", function (ev, picker) {
+        $(this).val("all");
+    });
+</script>

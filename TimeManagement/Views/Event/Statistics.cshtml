@@ -1,0 +1,264 @@
+﻿@model List<TimeManagement.Models.timeData>
+<div style="padding: 1% 8%;">
+    <div class="m-5">
+        <form action="/Event/Statistics" method="post" class="pull-left col-md pb-5">
+            <input id="yymd" name="yymd" type="text" placeholder="選取日期" class="col-md-2 form-control dateRange pos-absolute" required="">
+            <button type="submit" class="btn btn-warning btn-md col-md-1" href="" id="search"> <i class="fa fa-search"></i> 查詢</button>
+        </form>
+    </div>
+    <div class="row col-12">
+        <div id="chartContainer" style="width: 49%; height: 400px;" class="col-6 text-center ml-5"></div>
+        <div class="col-5 pl-5">
+            @{double cSleep = 0;
+                double cWork = 0;
+                double cLearn = 0;
+                double cEat = 0;
+                double cSport = 0;
+                double cFun = 0;
+                double cRead = 0;
+                double cTraffic = 0;
+                double cFamily = 0;
+                double cHouse = 0;
+                double cOthers = 0;
+                double tSleep = 0;
+                double tWork = 0;
+                double tLearn = 0;
+                double tEat = 0;
+                double tSport = 0;
+                double tFun = 0;
+                double tRead = 0;
+                double tTraffic = 0;
+                double tFamily = 0;
+                double tHouse = 0;
+                double tOthers = 0;
+                int sumDay = 0;
+                List<string> ymdList = new List<string>();
+
+            }
+            @functions {
+                //計算開始到結束總共花了幾小時
+                public double tCounts(string startTime, string endTime, TimeManagement.Models.timeData td)
+                {
+                    double sT = Convert.ToInt32(td.startTime.Substring(0, 2)) * 60 + Convert.ToInt32(td.startTime.Substring(3, 2));
+                    double eT = Convert.ToInt32(td.endTime.Substring(0, 2)) * 60 + Convert.ToInt32(td.endTime.Substring(3, 2));
+                    double t = (eT - sT) / 60;
+                    return t;
+                }
+                //計算每天平均所花費在某種類的小時
+                public double aTime(double time, double counts)
+                {
+                    double a = Math.Round((time / counts), 2);
+                    return a;
+                }
+            }
+
+            @foreach (var td in Model)
+            {
+                //計算使用者所查詢的總天數
+                if (!ymdList.Contains(td.ymd))
+                {
+                    ymdList.Add(td.ymd);
+                }
+                if (@td.category == "睡眠")
+                {
+                    tSleep += tCounts(td.startTime, td.endTime, td);
+                    cSleep++;
+                }
+                else if (@td.category == "學習")
+                {
+                    tLearn += tCounts(td.startTime, td.endTime, td);
+                    cLearn++;
+                }
+                else if (@td.category == "工作")
+                {
+                    tWork += tCounts(td.startTime, td.endTime, td);
+                    cWork++;
+                }
+                else if (@td.category == "食")
+                {
+                    tEat += tCounts(td.startTime, td.endTime, td);
+                    cEat++;
+                }
+                else if (@td.category == "運動")
+                {
+                    tSport += tCounts(td.startTime, td.endTime, td);
+                    cSport++;
+                }
+                else if (@td.category == "娛樂")
+                {
+                    tFun += tCounts(td.startTime, td.endTime, td);
+                    cFun++;
+                }
+                else if (@td.category == "閱讀")
+                {
+                    tRead += tCounts(td.startTime, td.endTime, td);
+                    cRead++;
+                }
+                else if (@td.category == "行車/乘車")
+                {
+                    tTraffic += tCounts(td.startTime, td.endTime, td);
+                    cTraffic++;
+                }
+                else if (@td.category == "家務事")
+                {
+                    tHouse += tCounts(td.startTime, td.endTime, td);
+                    cHouse++;
+                }
+                else if (@td.category == "親子/家庭")
+                {
+                    tFamily += tCounts(td.startTime, td.endTime, td);
+                    cFamily++;
+                }
+                else if (@td.category == "其他")
+                {
+                    tOthers += tCounts(td.startTime, td.endTime, td);
+                    cOthers++;
+                }
+            }
+            @{sumDay = ymdList.Count;
+                double avgSleep = aTime(tSleep, sumDay);
+                double perSleep = Math.Round((avgSleep / 24 * 100), 2);
+                double avgLearn = aTime(tLearn, sumDay);
+                double avgWork = aTime(tWork, sumDay);
+                double avgEat = aTime(tEat, sumDay);
+                double avgSport = aTime(tSport, sumDay);
+                double avgFun = aTime(tFun, sumDay);
+                double avgRead = aTime(tRead, sumDay);
+                double avgTraffic = aTime(tTraffic, sumDay);
+                double avgHouse = aTime(tHouse, sumDay);
+                double avgFamily = aTime(tFamily, sumDay);
+                double avgOthers = aTime(tOthers, sumDay);
+                double perLearn = Math.Round((avgLearn / 24 * 100), 2);
+                double perWork = Math.Round((avgWork / 24 * 100), 2);
+                double perEat = Math.Round((avgEat / 24 * 100), 2);
+                double perSport = Math.Round((avgSport / 24 * 100), 2);
+                double perFun = Math.Round((avgFun / 24 * 100), 2);
+                double perRead = Math.Round((avgRead / 24 * 100), 2);
+                double perTraffic = Math.Round((avgTraffic / 24 * 100), 2);
+                double perHouse = Math.Round((avgHouse / 24 * 100), 2);
+                double perFamily = Math.Round((avgFamily / 24 * 100), 2);
+                double perOthers = Math.Round((avgOthers / 24 * 100), 2);
+            }
+
+            <h3>總天數 @sumDay</h3>
+            <h4>平均每天：</h4>
+            <div class="table-responsive-sm" style="font-family: 'Microsoft JhengHei', Arial, serif;">
+
+                <table class=" font-weight-normal table table-striped table-hover table-bordered">
+                    <tr>
+                        <td>睡眠 @avgSleep 小時</td>
+                        <td>學習 @avgLearn 小時</td>
+                    </tr>
+                    <tr>
+                        <td>工作 @avgWork 小時</td>
+                        <td>食   @avgEat 小時</td>
+                    </tr>
+                    <tr>
+                        <td>運動 @avgSport 小時</td>
+                        <td>娛樂 @avgFun 小時</td>
+                    </tr>
+                    <tr>
+                        <td>閱讀 @avgRead 小時</td>
+                        <td>行車/乘車 @avgTraffic 小時</td>
+                    </tr>
+                    <tr>
+                        <td>家務事 @avgHouse 小時</td>
+                        <td>親子/家庭 @avgFamily 小時</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">其他 @avgOthers 小時</td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://momentjs.com/downloads/moment.js"></script>
+<script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+<script type="text/javascript">
+    $("#search").click(function () { });
+     var chart = new CanvasJS.Chart("chartContainer", {
+         title: {
+             text: "平均每日的時間分布",
+             fontFamily: "Microsoft JhengHei",
+             fontSize: 25},
+         animationEnabled: true,
+         legend: {
+             verticalAlign: "top",
+             horizontalAlign: "left",
+             fontSize: 16,
+             fontFamily: "Helvetica"},
+         theme: "light2",
+         data: [{
+             type: "pie",
+             indexLabelFontFamily: "Garamond",
+             indexLabelFontSize: 16,
+             indexLabel: "{label} {y}%",
+             startAngle: -20,
+             showInLegend: true,
+             toolTipContent: "{legendText} {y}%",
+             dataPoints: [
+                 { y: @perSleep, legendText: "睡眠", label: "睡眠" },
+                 { y: @perSport, legendText: "運動", label: "運動" },
+                 { y: @perEat, legendText: "食", label: "食" },
+                 { y: @perWork, legendText: "工作", label: "工作" },
+                 { y: @perLearn, legendText: "學習", label: "學習" },
+                 { y: @perTraffic, legendText: "行車/乘車", label: "行車/乘車" },
+                 { y: @perFun, legendText: "娛樂", label: "娛樂" },
+                 { y: @perRead, legendText: "閱讀", label: "閱讀" },
+                 { y: @perHouse, legendText: "家務事", label: "家務事" },
+                 { y: @perFamily, legendText: "親子/家庭", label: "親子/家庭" },
+                 { y: @perOthers, legendText: "其他", label: "其他" }],
+             //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+             //dataPoints:
+            }]
+        });
+        chart.render();
+</script>
+<!--載入連結-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" rel="stylesheet"></link>
+<!--載入連結-->
+<!--執行 Date Range Picker-->
+<script>
+    $("input.default").daterangepicker();
+</script>
+<!--執行 Date Range Picker-->
+<script>
+    $("input.dateRange").daterangepicker({
+                    "alwaysShowCalendars": true,
+        showDropdowns: true,
+        opens: "right",
+        startDate: moment().subtract(30, "days"),
+        endDate: moment(),
+        ranges: {
+                        "今天": [moment(), moment()],
+            "過去 7 天": [moment().subtract(6, "days"), moment()],
+            "本月": [moment().startOf("month"), moment().endOf("month")],
+            "上個月": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+        },
+        locale: {
+            format: "YYYY-MM-DD",
+            separator: " ~ ",
+            applyLabel: "確定",
+            cancelLabel: "清除",
+            fromLabel: "開始日期",
+            toLabel: "結束日期",
+            customRangeLabel: "自訂日期區間",
+            daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+            monthNames: ["1月", "2月", "3月", "4月", "5月", "6月",
+                "7月", "8月", "9月", "10月", "11月", "12月"
+            ],
+            firstDay: 0
+        }
+    });
+    $("input.dateRange").on("cancel.daterangepicker", function (ev, picker) {
+        $(this).val("all");
+    });
+    $("input.dateRange").val("all");
+</script>

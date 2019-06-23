@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <title>時資有Way</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Favicons -->
+    <link href="~/img/TMGLOGO.png" rel="icon">
+    <link href="~/img/TMGLOGO.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="~/css/style.css" rel="stylesheet">
+    @*<title>@ViewBag.Title</title>*@
+
+    <!-- stylesheets -->
+    <link href="~/Content/cbootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    @*<link href="~/Content/style.css" rel="stylesheet" type="text/css" />*@
+
+    <!-- scripts -->
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <!--[if lt IE 9 ]>
+        <script src="/Scripts/html5shiv.min.js"></script>
+        <script src="/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+<body>
+    <!--==========================
+    Header
+    ============================-->
+    <header id="header">
+        <div class="container">
+
+            <div id="logo" class="pull-left">
+                <a href="#hero"><img src="~/img/TMGLOGO1.png" alt="" title="" /></a>
+            </div>
+
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="/Home/memberIndex">Home</a></li>
+                    <li class="menu-has-children">
+                        <a href="#services">Services</a>
+                        <ul>
+                            <li><a href="/Event/timeList">Event Date / Time</a></li>
+                            <li><a href="/Event/Statistics">Statistics</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/Home/Logout">Log out</a></li>
+                </ul>
+            </nav><!-- #nav-menu-container -->
+        </div>
+    </header><!-- #header -->
+    <!--==========================
+    Call To Action Section
+    ============================-->
+    <section id="call-to-action">
+        <div class="container wow fadeIn">
+            <div class="row">
+                <div class="col-lg-12 text-center text-lg-left pt-5">
+                    <h3 class="cta-title text-center">Hello! Dear @Session["who"].ToString().ToUpper() <i class="fa fa-smile-o"></i> </h3>
+                    <p class="cta-text text-center"> Treasure Time</p>
+                </div>
+            </div>
+        </div>
+    </section><!-- #call-to-action -->
+
+    <div id="page-content-wrapper" class="page-content-toggle">
+        <div class="container-fluid">
+            <div class="row">
+                <div id="content" class="col-md-12 col-xs-12">
+                    @RenderBody()
+                </div> <!-- /content-->
+            </div> <!-- /row -->
+        </div> <!-- /container-fluid -->
+        <!--==========================
+          Footer
+        ============================-->
+        <footer id="footer"  style=" background-image: url(../img/logo5.png); background-repeat:no-repeat;background-position-x:100%;background-position-y:50%;background-size:15%;">
+            <div class="footer-top">
+                <div class="container">
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="copyright">
+                    &copy; Copyright <strong>WON</strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    Designed by <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>
+                </div>
+            </div>
+        </footer><!-- #footer -->
+    </div>
+    <!-- /page-content-wrapper -->
+
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/jquery-migrate.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/counterup/counterup.min.js"></script>
+    <script src="~/lib/superfish/hoverIntent.js"></script>
+    <script src="~/lib/superfish/superfish.min.js"></script>
+
+    <!-- Contact Form JavaScript File -->
+    <script src="~/contactform/contactform.js"></script>
+
+    <!-- Template Main Javascript File -->
+    <script src="~/js/main.js"></script>
+
+
+</body>
+</html>
